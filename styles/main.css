@@ -1,54 +1,54 @@
 /* FONTS */
 @font-face {
   font-family: 'GT Eesti Pro Text Book';
-  src: url('/assets/fonts/GTEestiProText-Book.woff2') format('woff2'),
-    url('/assets/fonts/GTEestiProText-Book.woff') format('woff'),
-    url('/assets/fonts/GTEestiProText-Book.ttf') format('truetype');
+  src: url('../assets/fonts/GTEestiProText-Book.woff2') format('woff2'),
+    url('../assets/fonts/GTEestiProText-Book.woff') format('woff'),
+    url('./assets/fonts/GTEestiProText-Book.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'KyivTypeSans';
-  src: url('/assets/fonts/KyivTypeSans-Regular.woff2') format('woff2'),
-    url('/assets/fonts/KyivTypeSans-Regular.woff') format('woff'),
-    url('/assets/fonts/KyivTypeSans-Regular.ttf') format('truetype');
+  src: url('../assets/fonts/KyivTypeSans-Regular.woff2') format('woff2'),
+    url('../assets/fonts/KyivTypeSans-Regular.woff') format('woff'),
+    url('../assets/fonts/KyivTypeSans-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'KyivTypeSans';
-  src: url('/assets/fonts/KyivTypeSans-Medium.woff2') format('woff2'),
-    url('/assets/fonts/KyivTypeSans-Medium.woff') format('woff'),
-    url('/assets/fonts/KyivTypeSans-Medium.ttf') format('truetype');
+  src: url('../assets/fonts/KyivTypeSans-Medium.woff2') format('woff2'),
+    url('../assets/fonts/KyivTypeSans-Medium.woff') format('woff'),
+    url('../assets/fonts/KyivTypeSans-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'KyivTypeSans';
-  src: url('/assets/fonts/KyivTypeSans-Bold.woff2') format('woff2'),
-    url('/assets/fonts/KyivTypeSans-Bold.woff') format('woff'),
-    url('/assets/fonts/KyivTypeSans-Bold.ttf') format('truetype');
+  src: url('./assets/fonts/KyivTypeSans-Bold.woff2') format('woff2'),
+    url('../assets/fonts/KyivTypeSans-Bold.woff') format('woff'),
+    url('../assets/fonts/KyivTypeSans-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Golos-Text';
-  src: url('/assets/fonts/Golos-Text_Regular.woff2') format('woff2'),
-    url('/assets/fonts/Golos-Text_Regular.woff') format('woff'),
-    url('/assets/fonts/Golos-Text_Regular.ttf') format('truetype');
+  src: url('../assets/fonts/Golos-Text_Regular.woff2') format('woff2'),
+    url('../assets/fonts/Golos-Text_Regular.woff') format('woff'),
+    url('../assets/fonts/Golos-Text_Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Golos-Text';
-  src: url('/assets/fonts/Golos-Text_Medium.woff2') format('woff2'),
-    url('/assets/fonts/Golos-Text_Medium.woff') format('woff'),
-    url('/assets/fonts/Golos-Text_Medium.ttf') format('truetype');
+  src: url('../assets/fonts/Golos-Text_Medium.woff2') format('woff2'),
+    url('../assets/fonts/Golos-Text_Medium.woff') format('woff'),
+    url('../assets/fonts/Golos-Text_Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -153,13 +153,13 @@ img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: url('/assets/images/icons/arrow_black.svg') #faf5f0 no-repeat
+  background: url('../assets/images/icons/arrow_black.svg') #faf5f0 no-repeat
     center;
   transition: all ease 0.2s;
 }
 .arrow__button:hover,
 .arrow__button:focus {
-  background: url('/assets/images/icons/arrow_black.svg') #f8f1ea no-repeat
+  background: url('../assets/images/icons/arrow_black.svg') #f8f1ea no-repeat
     center;
 }
 /* SERVICES */
@@ -323,7 +323,7 @@ img {
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  background: url('/assets/images/icons/check_mark.svg') #f8f1ea no-repeat
+  background: url('../assets/images/icons/check_mark.svg') #f8f1ea no-repeat
     center;
 }
 .offer__button {
@@ -331,7 +331,7 @@ img {
   width: 186px;
 }
 .offer__button-decor {
-  background: url('/assets/images/icons/arrow_gold.svg') #ffffff no-repeat
+  background: url('../assets/images/icons/arrow_gold.svg') #ffffff no-repeat
     center;
 }
 /* ABOUT */
@@ -366,7 +366,7 @@ img {
   margin-bottom: 80px;
 }
 .about__button-decor {
-  background: url('/assets/images/icons/arrow_white.svg') #ac873e no-repeat
+  background: url('../assets/images/icons/arrow_white.svg') #ac873e no-repeat
     center;
 }
 .about__list {
