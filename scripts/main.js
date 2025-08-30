@@ -10,13 +10,21 @@ const items = [
   'Тайские и балийские массажи',
 ]
 
-const sources = [
+const sourcesPng = [
   './assets/images/header/slide_1_min.png',
   './assets/images/header/slide_2_min.png',
   './assets/images/header/slide_3_min.png',
   './assets/images/header/slide_3_min.png',
   './assets/images/header/slide_3_min.png',
   './assets/images/header/slide_3_min.png',
+]
+const sourcesWebp = [
+  './assets/images/header/slide_1_min.webp',
+  './assets/images/header/slide_2_min.webp',
+  './assets/images/header/slide_3_min.webp',
+  './assets/images/header/slide_3_min.webp',
+  './assets/images/header/slide_3_min.webp',
+  './assets/images/header/slide_3_min.webp',
 ]
 
 const updateScrollbar = (swiper) => {
@@ -67,7 +75,17 @@ let headerSlider = new Swiper(headerSliderBlock, {
         <div class="${className}">
           <span>${index + 1}</span>
           <p>${items[index]}</p>
-          <img src="${sources[index]}" alt="Мини иллюстрация" loading="lazy">
+          <picture>
+            <source
+              srcset="${sourcesWebp[index]}" type="image/webp" />
+              <img
+                src="${sourcesPng[index]}"
+                alt="Мини иллюстрация"
+                width="300"
+                height="171"
+                loading="lazy"
+              />
+          </picture>
         </div>
       `
     },
