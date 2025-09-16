@@ -88,7 +88,7 @@ img {
 .block__title {
   font-family: 'GT Eesti Pro Text Book';
   font-size: 3.5rem;
-  line-height: 52.64px;
+  line-height: 100%;
   color: #1b1b1b;
 }
 .block__subtitle {
@@ -176,6 +176,48 @@ img {
 .arrow__button:focus {
   background: url('../assets/images/icons/arrow_black.svg') #f8f1ea no-repeat
     center;
+}
+.slider__navbutton {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0px 2px 2px 0px rgba(58, 58, 58, 0.08);
+  cursor: pointer;
+}
+.slider__navbutton-prev {
+  background: url('../assets/images/icons/arrow_black_left.svg') #ffffff center
+    center / 12px 12px no-repeat;
+}
+.slider__navbutton-next {
+  background: url('../assets/images/icons/arrow_black_right.svg') #ffffff center
+    center / 12px 12px no-repeat;
+}
+.slider__scrollbar {
+  display: flex;
+  max-width: 1005px;
+  gap: 4px;
+  position: absolute;
+  bottom: 43px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+.slider__scrollbar .bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  border-radius: 32px;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+}
+.slider__scrollbar .bar .fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: #ffffff;
+  border-radius: 32px;
 }
 /* HEADER */
 .header {
@@ -299,32 +341,6 @@ img {
   .swiper-pagination-bullet-active
   img {
   opacity: 1;
-}
-.hslider__scrollbar {
-  display: flex;
-  max-width: 1005px;
-  gap: 4px;
-  position: absolute;
-  bottom: 43px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-}
-.hslider__scrollbar .bar {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(4px);
-  border-radius: 32px;
-  overflow: hidden;
-  flex-shrink: 0;
-  transition: width 0.3s ease;
-}
-.hslider__scrollbar .bar .fill {
-  display: block;
-  height: 100%;
-  width: 0%;
-  background: #ffffff;
-  border-radius: 32px;
 }
 .hslider__slide {
   position: relative;
@@ -1046,6 +1062,293 @@ img {
   line-height: 25.2px;
   color: #1b1b1b;
   max-width: 232px;
+}
+/* MASSAGE */
+.massage {
+  margin-bottom: 96px;
+}
+.massage__text {
+  max-width: 810px;
+  margin: 0 auto 56px auto;
+  text-align: center;
+}
+.massage__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.massage__item {
+  flex: 0 1 598px;
+  max-width: 598px;
+  height: 598px;
+  position: relative;
+  border-radius: 20px;
+  border: 4px solid #ffffff;
+  box-shadow: 0px 2px 2px 0px rgba(58, 58, 58, 0.08);
+}
+.massage__item::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  backdrop-filter: blur(10px);
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+  z-index: 1;
+  border-radius: 20px;
+}
+.massage__item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.4);
+}
+.massage__item-last {
+  flex: 0 1 100%;
+  max-width: 100%;
+  height: 193px;
+}
+.massage__item-last::before {
+  content: none;
+}
+.massage__item-last .massitem__info {
+  justify-content: center;
+  padding: 0 0 0 56px;
+}
+.massage__item-last .massitem__title {
+  margin-bottom: 8px;
+}
+.massage__item-last .massitem__description {
+  margin-bottom: 0;
+}
+.massitem__wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.massitem__overlay {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.massitem__play {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border: 2.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 120px;
+  background: url('../assets/images/icons/play.svg') rgba(255, 255, 255, 0.12)
+    center center / 32px no-repeat;
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  z-index: 2;
+  transition: transform ease 0.3s;
+}
+.massitem__play:hover {
+  transform: scale(0.8);
+}
+.massitem__preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 16px;
+}
+.massitem__frame {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  z-index: 2;
+}
+.massitem__image {
+  height: 100%;
+  border-radius: 16px;
+}
+.massitem__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 32px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.massitem__title {
+  font-family: 'GT Eesti Pro Text Book';
+  font-size: 2.25rem;
+  line-height: 110%;
+}
+.massitem__description {
+  max-width: 380px;
+  margin-bottom: 24px;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 140%;
+}
+.massitem__buttons {
+  display: flex;
+}
+/* TRADITION */
+.tradition {
+  position: relative;
+}
+.tradition::before {
+  content: '';
+  display: block;
+  width: 324px;
+  height: 356px;
+  background: url('../assets/images/tradition/heart_small.svg') center / cover
+    no-repeat;
+  position: absolute;
+  top: 63px;
+  left: -208px;
+}
+.tradition__title {
+  max-width: 830px;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 56px;
+}
+.trslider {
+  margin-right: -120px;
+}
+.trslide {
+  border: 4px solid #ffffff;
+  width: 620px;
+  height: 256px;
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 2px 2px 0px rgba(58, 58, 58, 0.08);
+}
+.trslide__image {
+  flex: 0 1 302px;
+  max-width: 302px;
+  height: 100%;
+}
+.trslide__text {
+  max-width: 272px;
+  padding: 24px 0 0 32px;
+  font-size: 1.125rem;
+  line-height: 140%;
+  font-weight: 400;
+  color: #1b1b1b;
+}
+.trslider__nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  width: 1200px;
+  margin: 16px 0;
+}
+.trquote {
+  text-align: center;
+  color: #1b1b1b;
+  margin-bottom: 96px;
+  position: relative;
+}
+.tradition::after {
+  /* content: ''; */
+  display: block;
+  width: 490px;
+  height: 539px;
+  background: url('../assets/images/tradition/heart_large.svg') center / cover
+    no-repeat;
+  position: absolute;
+  top: 80px;
+  right: -280px;
+}
+.trquote__icon {
+  margin-bottom: 24px;
+}
+.trquote__text {
+  max-width: 510px;
+  margin: 0 auto 48px auto;
+  font-size: 1.5rem;
+  line-height: 140%;
+}
+.trquote__photo {
+  margin-bottom: 24px;
+}
+.trquote__name,
+.trquote__description {
+  line-height: 124%;
+  text-transform: uppercase;
+}
+.trquote__name {
+  font-size: 0.8125rem;
+  margin-bottom: 4px;
+}
+.trquote__description {
+  font-size: 0.75rem;
+  color: #ae8f78;
+}
+.stslider {
+  padding-bottom: 50px;
+  margin: 0 -120px 120px -120px;
+}
+.stslider__slide {
+  width: 998px;
+  height: 600px;
+  position: relative;
+}
+.stslider__slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 24px;
+  transition: all ease 0.3s;
+}
+.stslider__slide.swiper-slide-active::before {
+  background: rgba(0, 0, 0, 0);
+}
+.stslider__image {
+  border-radius: 24px;
+  height: 100%;
+}
+.stslider__nav {
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  z-index: 1;
+}
+.stslider__scrollbar {
+  bottom: 0;
+}
+.stslider__scrollbar .bar {
+  height: 3px;
+  background: rgba(0, 0, 0, 0.12);
+}
+.stslider__scrollbar .bar .fill {
+  background: #1b1b1b;
 }
 /* RESPONSIVE */
 @media (max-width: 1360px) {

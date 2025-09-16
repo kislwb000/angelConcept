@@ -27,14 +27,21 @@ const sourcesWebp = [
   './assets/images/header/slide_3_min.webp',
 ]
 
-const updateScrollbar = (swiper) => {
-  const bars = document.querySelectorAll('.hslider__scrollbar .bar')
-  const fills = document.querySelectorAll('.hslider__scrollbar .bar .fill')
+const updateScrollbar = (
+  swiper,
+  params = {
+    scrollbarClass: '.hslider__scrollbar',
+    maxWidthBar: '260px',
+    minWidthBar: '145px',
+  }
+) => {
+  const bars = document.querySelectorAll(`${params.scrollbarClass} .bar`)
+  const fills = document.querySelectorAll(`${params.scrollbarClass} .bar .fill`)
   const current = swiper.realIndex
 
   bars.forEach((bar, i) => {
     bar.classList.remove('active')
-    bar.style.width = i === current ? '260px' : '145px'
+    bar.style.width = i === current ? params.maxWidthBar : params.minWidthBar
   })
 
   if (bars[current]) {
@@ -220,4 +227,79 @@ window.addEventListener('load', initSwiperIfMobile)
 window.addEventListener('resize', () => {
   clearTimeout(window.__swiperTimer)
   window.__swiperTimer = setTimeout(initSwiperIfMobile, 200) // debounce
+})
+
+// MASSAGE PLAYER
+const massageGrid = document.querySelector('.massage__grid')
+
+massageGrid.addEventListener('click', (event) => {
+  const { target } = event
+  if (target.hasAttribute('data-video')) {
+    const dataVIdeo = target.getAttribute('data-video')
+    const frame = massageGrid.querySelector(`iframe[data-video='${dataVIdeo}']`)
+    frame.src += '?autoplay=true'
+    frame.style.display = 'block'
+  }
+})
+
+// TRADITION SLIDER
+const traditionSliderContainer = document.querySelector('.trslider')
+
+const traditionSlider = new Swiper(traditionSliderContainer, {
+  slidesPerView: 'auto',
+  spaceBetween: 4,
+  centeredSlides: false,
+  grabCursor: true,
+  loop: false,
+
+  navigation: {
+    nextEl: '.trslider__navbutton-next',
+    prevEl: '.trslider__navbutton-prev',
+  },
+})
+
+// STOCK SLIDER
+const stockSliderContainer = document.querySelector('.stslider')
+
+const stslider = new Swiper(stockSliderContainer, {
+  slidesPerView: 'auto',
+  centeredSlides: true,
+  spaceBetween: 4,
+  loop: true,
+  initialSlide: 0,
+  grabCursor: true,
+  speed: 700,
+  autoplay: {
+    delay: 2000,
+    disableOnInteraction: false,
+  },
+
+  navigation: {
+    nextEl: '.stslider__navbutton-next',
+    prevEl: '.stslider__navbutton-prev',
+  },
+
+  on: {
+    init: function () {
+      const scrollbar = document.querySelector('.stslider__scrollbar')
+
+      scrollbar.innerHTML = items
+        .map(() => `<span class="bar"><span class="fill"></span></span>`)
+        .join('')
+
+      updateScrollbar(this, {
+        scrollbarClass: '.stslider__scrollbar',
+        maxWidthBar: '260px',
+        minWidthBar: '145px',
+      })
+    },
+
+    slideChange: function () {
+      updateScrollbar(this, {
+        scrollbarClass: '.stslider__scrollbar',
+        maxWidthBar: '140px',
+        minWidthBar: '38px',
+      })
+    },
+  },
 })
