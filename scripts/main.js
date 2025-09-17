@@ -303,3 +303,113 @@ const stslider = new Swiper(stockSliderContainer, {
     },
   },
 })
+
+// RESULT SLIDER
+const resultSliderContainer = document.querySelector('.reslider')
+
+const reslider = new Swiper(resultSliderContainer, {
+  slidesPerView: 1,
+  centeredSlides: false,
+  spaceBetween: 0,
+  loop: false,
+  grabCursor: false,
+  allowTouchMove: false,
+
+  navigation: {
+    nextEl: '.reslider__navbutton-next',
+    prevEl: '.reslider__navbutton-prev',
+  },
+
+  pagination: {
+    el: '.reslider__pagination',
+    clickable: false,
+    type: 'fraction',
+    formatFractionCurrent: function (number) {
+      return number < 10 ? '0' + number : number
+    },
+    formatFractionTotal: function (number) {
+      return number < 10 ? '0' + number : number
+    },
+    renderFraction: function (currentClass, totalClass) {
+      return (
+        '<span class="' +
+        currentClass +
+        '"></span>' +
+        ' — ' +
+        '<span class="' +
+        totalClass +
+        '"></span>'
+      )
+    },
+  },
+})
+
+// COMPARISON
+let isDragging = false
+let container, slider, beforeImage
+
+function initSlider() {
+  container = document.querySelector('.comparison__container')
+  slider = document.querySelector('.comparison__slider')
+  beforeImage = document.querySelector('.comparison__image-before')
+
+  container.addEventListener('mousedown', startDrag)
+  document.addEventListener('mousemove', drag)
+  document.addEventListener('mouseup', stopDrag)
+
+  container.addEventListener('touchstart', startDrag, { passive: false })
+  document.addEventListener('touchmove', drag, { passive: false })
+  document.addEventListener('touchend', stopDrag, { passive: false })
+
+  container.addEventListener('selectstart', (e) => e.preventDefault())
+  container.addEventListener('dragstart', (e) => e.preventDefault())
+}
+
+function startDrag(e) {
+  isDragging = true
+  updateSlider(e)
+}
+
+function drag(e) {
+  if (!isDragging) return
+  updateSlider(e)
+}
+
+function stopDrag() {
+  isDragging = false
+}
+
+function updateSlider(e) {
+  e.preventDefault()
+
+  const rect = container.getBoundingClientRect()
+  let clientX
+
+  if (e.touches) {
+    clientX = e.touches[0].clientX
+  } else if (e.changedTouches) {
+    clientX = e.changedTouches[0].clientX
+  } else {
+    clientX = e.clientX
+  }
+
+  const x = clientX - rect.left
+  const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100))
+
+  slider.style.left = percentage + '%'
+  beforeImage.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`
+}
+document.addEventListener('DOMContentLoaded', initSlider)
+
+//  PROCEDURES ACCORDION
+const proceduresItems = document.querySelectorAll('.procedures__item')
+const firstProceduresItem = document.querySelector('.procedures__item')
+
+proceduresItems.forEach((proceduresItem) =>
+  proceduresItem.addEventListener('mouseenter', (event) => {
+    proceduresItems.forEach((proceduresItem) =>
+      proceduresItem.classList.remove('active')
+    )
+    event.target.classList.add('active')
+  })
+)
