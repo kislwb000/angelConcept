@@ -121,6 +121,8 @@ const hbarMenuBtn = document.querySelector('.hbar__menubtn')
 const hmenuLinkFirst = document.querySelector('.hmenu__link')
 const mainMenu = document.querySelector('.menu')
 const headerMenu = document.querySelector('.header__menu')
+const menuWrapper = document.querySelector('.menu__wrapper')
+const menuHeight = menuWrapper.offsetHeight
 
 function showMinimalHbar() {
   hbar.classList.add('scrolled')
@@ -134,6 +136,8 @@ function showMainMenu() {
   hbar.classList.add('light')
   headerMenu.classList.add('light')
   mainMenu.classList.add('opened')
+
+  mainMenu.style.height = `${menuHeight}px`
 }
 function hideMainMenu() {
   hmenuLinkFirst.classList.remove('active')
@@ -141,6 +145,7 @@ function hideMainMenu() {
   headerMenu.classList.remove('light')
   mainMenu.classList.remove('opened')
   mainMenu.classList.remove('scrolled')
+  mainMenu.style.height = 0
 }
 
 window.addEventListener('scroll', () => {
@@ -175,11 +180,13 @@ hbarMenuBtn.addEventListener('click', () => {
     mainMenu.classList.add('scrolled')
     hmenuLinkFirst.classList.add('active')
     mainMenu.classList.add('opened')
+    mainMenu.style.height = `${menuHeight}px`
   } else {
     headerMenu.classList.remove('scrolled', 'light')
     mainMenu.classList.remove('scrolled')
     hmenuLinkFirst.classList.remove('active')
     mainMenu.classList.remove('opened')
+    mainMenu.style.height = 0
   }
 })
 
@@ -249,7 +256,7 @@ const traditionSlider = new Swiper(traditionSliderContainer, {
   slidesPerView: 'auto',
   spaceBetween: 4,
   centeredSlides: false,
-  grabCursor: true,
+  grabCursor: false,
   loop: false,
 
   navigation: {
@@ -345,61 +352,63 @@ const reslider = new Swiper(resultSliderContainer, {
 })
 
 // COMPARISON
-let isDragging = false
-let container, slider, beforeImage
+function initSliders() {
+  const containers = document.querySelectorAll('.comparison__container')
 
-function initSlider() {
-  container = document.querySelector('.comparison__container')
-  slider = document.querySelector('.comparison__slider')
-  beforeImage = document.querySelector('.comparison__image-before')
+  containers.forEach((container) => {
+    const slider = container.querySelector('.comparison__slider')
+    const beforeImage = container.querySelector('.comparison__image-before')
+    let isDragging = false
 
-  container.addEventListener('mousedown', startDrag)
-  document.addEventListener('mousemove', drag)
-  document.addEventListener('mouseup', stopDrag)
+    function startDrag(e) {
+      isDragging = true
+      updateSlider(e)
+    }
 
-  container.addEventListener('touchstart', startDrag, { passive: false })
-  document.addEventListener('touchmove', drag, { passive: false })
-  document.addEventListener('touchend', stopDrag, { passive: false })
+    function drag(e) {
+      if (!isDragging) return
+      updateSlider(e)
+    }
 
-  container.addEventListener('selectstart', (e) => e.preventDefault())
-  container.addEventListener('dragstart', (e) => e.preventDefault())
+    function stopDrag() {
+      isDragging = false
+    }
+
+    function updateSlider(e) {
+      e.preventDefault()
+
+      const rect = container.getBoundingClientRect()
+      let clientX
+
+      if (e.touches) {
+        clientX = e.touches[0].clientX
+      } else if (e.changedTouches) {
+        clientX = e.changedTouches[0].clientX
+      } else {
+        clientX = e.clientX
+      }
+
+      const x = clientX - rect.left
+      const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100))
+
+      slider.style.left = percentage + '%'
+      beforeImage.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`
+    }
+
+    container.addEventListener('mousedown', startDrag)
+    document.addEventListener('mousemove', drag)
+    document.addEventListener('mouseup', stopDrag)
+
+    container.addEventListener('touchstart', startDrag, { passive: false })
+    document.addEventListener('touchmove', drag, { passive: false })
+    document.addEventListener('touchend', stopDrag, { passive: false })
+
+    container.addEventListener('selectstart', (e) => e.preventDefault())
+    container.addEventListener('dragstart', (e) => e.preventDefault())
+  })
 }
 
-function startDrag(e) {
-  isDragging = true
-  updateSlider(e)
-}
-
-function drag(e) {
-  if (!isDragging) return
-  updateSlider(e)
-}
-
-function stopDrag() {
-  isDragging = false
-}
-
-function updateSlider(e) {
-  e.preventDefault()
-
-  const rect = container.getBoundingClientRect()
-  let clientX
-
-  if (e.touches) {
-    clientX = e.touches[0].clientX
-  } else if (e.changedTouches) {
-    clientX = e.changedTouches[0].clientX
-  } else {
-    clientX = e.clientX
-  }
-
-  const x = clientX - rect.left
-  const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100))
-
-  slider.style.left = percentage + '%'
-  beforeImage.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`
-}
-document.addEventListener('DOMContentLoaded', initSlider)
+document.addEventListener('DOMContentLoaded', initSliders)
 
 //  PROCEDURES ACCORDION
 const proceduresItems = document.querySelectorAll('.procedures__item')
