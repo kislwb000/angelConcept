@@ -1,3 +1,4 @@
+const isMobile = window.innerWidth < 1080
 // HEADER SLIDER
 const headerSliderBlock = document.querySelector('.hslider')
 
@@ -74,11 +75,14 @@ let headerSlider = new Swiper(headerSliderBlock, {
     disableOnInteraction: false,
   },
 
-  pagination: {
-    el: '.hslider__pagination',
-    clickable: true,
-    renderBullet: function (index, className) {
-      return `
+  breakpoints: {
+    320: {},
+    1080: {
+      pagination: {
+        el: '.hslider__pagination',
+        clickable: true,
+        renderBullet: function (index, className) {
+          return `
         <div class="${className}">
           <span>${index + 1}</span>
           <p>${items[index]}</p>
@@ -95,22 +99,64 @@ let headerSlider = new Swiper(headerSliderBlock, {
           </picture>
         </div>
       `
+        },
+      },
     },
   },
 
   on: {
     init: function () {
-      const scrollbar = document.querySelector('.hslider__scrollbar')
+      if (window.innerWidth >= 1080) {
+        const scrollbar = document.querySelector('.hslider__scrollbar')
 
-      scrollbar.innerHTML = items
-        .map(() => `<span class="bar"><span class="fill"></span></span>`)
-        .join('')
+        scrollbar.innerHTML = items
+          .map(() => `<span class="bar"><span class="fill"></span></span>`)
+          .join('')
 
-      updateScrollbar(this)
+        updateScrollbar(this)
+      } else if (window.innerWidth >= 580) {
+        const scrollbar = document.querySelector('.hslider__scrollbar')
+
+        scrollbar.innerHTML = items
+          .map(() => `<span class="bar"><span class="fill"></span></span>`)
+          .join('')
+
+        updateScrollbar(this, {
+          scrollbarClass: '.hslider__scrollbar',
+          maxWidthBar: '90px',
+          minWidthBar: '90px',
+        })
+      } else if (window.innerWidth >= 300) {
+        const scrollbar = document.querySelector('.hslider__scrollbar')
+
+        scrollbar.innerHTML = items
+          .map(() => `<span class="bar"><span class="fill"></span></span>`)
+          .join('')
+
+        updateScrollbar(this, {
+          scrollbarClass: '.hslider__scrollbar',
+          maxWidthBar: '45px',
+          minWidthBar: '45px',
+        })
+      }
     },
 
     slideChange: function () {
-      updateScrollbar(this)
+      if (window.innerWidth >= 1080) {
+        updateScrollbar(this)
+      } else if (window.innerWidth >= 580) {
+        updateScrollbar(this, {
+          scrollbarClass: '.hslider__scrollbar',
+          maxWidthBar: '90px',
+          minWidthBar: '90px',
+        })
+      } else if (window.innerWidth >= 300) {
+        updateScrollbar(this, {
+          scrollbarClass: '.hslider__scrollbar',
+          maxWidthBar: '45px',
+          minWidthBar: '45px',
+        })
+      }
     },
   },
 })
@@ -124,6 +170,75 @@ const mainMenu = document.querySelector('.menu')
 const headerMenu = document.querySelector('.header__menu')
 const menuWrapper = document.querySelector('.menu__wrapper')
 let isOpenMainMenu = false
+
+if (isMobile) {
+  hbarMenuBtn.addEventListener('click', () => {
+    hbarMenuBtn.classList.toggle('active')
+    if (hbarMenuBtn.classList.contains('active')) {
+      hbar.classList.add('scrolled')
+      mainMenu.classList.add('opened')
+      document.documentElement.style.overflow = 'hidden'
+    } else {
+      hbar.classList.remove('scrolled')
+      mainMenu.classList.remove('opened')
+      document.documentElement.style.overflow = ''
+    }
+  })
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY) {
+      showMinimalHbar()
+      hbarMenuBtn.classList.remove('active')
+    } else {
+      hideMinimalHbar()
+    }
+  })
+} else {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY) {
+      showMinimalHbar()
+      hideMainMenu()
+      hideMinimalHmenu()
+      hbarMenuBtn.classList.remove('active')
+    } else {
+      hideMinimalHbar()
+      showMinimalHmenu()
+    }
+  })
+
+  hmenuLinkFirst.addEventListener('mouseenter', (event) => {
+    event.preventDefault()
+    if (!hbarMenuBtn.classList.contains('active')) {
+      showMainMenu()
+      isOpenMainMenu = true
+    }
+  })
+  hbar.addEventListener('mouseenter', (event) => {
+    if (isOpenMainMenu && !hbarMenuBtn.classList.contains('active')) {
+      hideMainMenu()
+    }
+  })
+  mainMenu.addEventListener('mouseleave', (event) => {
+    if (isOpenMainMenu && !hbarMenuBtn.classList.contains('active')) {
+      hideMainMenu()
+    }
+  })
+
+  hbarMenuBtn.addEventListener('click', () => {
+    hbarMenuBtn.classList.toggle('active')
+    if (hbarMenuBtn.classList.contains('active')) {
+      headerMenu.classList.remove('scrolled')
+      headerMenu.classList.add('light')
+      mainMenu.classList.add('opened')
+      hmenuLinkFirst.classList.add('active')
+    } else {
+      headerMenu.classList.add('scrolled')
+      headerMenu.classList.remove('light')
+      mainMenu.classList.remove('opened')
+      hmenuLinkFirst.classList.remove('active')
+    }
+  })
+}
 
 function showMinimalHbar() {
   hbar.classList.add('scrolled')
@@ -153,83 +268,59 @@ function hideMainMenu() {
   mainMenu.classList.remove('scrolled')
 }
 
-window.addEventListener('scroll', () => {
-  if (window.scrollY) {
-    showMinimalHbar()
-    hideMainMenu()
-    hideMinimalHmenu()
-    hbarMenuBtn.classList.remove('active')
-  } else {
-    hideMinimalHbar()
-    showMinimalHmenu()
-  }
-})
-
-hmenuLinkFirst.addEventListener('mouseenter', (event) => {
-  event.preventDefault()
-  if (!hbarMenuBtn.classList.contains('active')) {
-    showMainMenu()
-    isOpenMainMenu = true
-  }
-})
-hbar.addEventListener('mouseenter', (event) => {
-  if (isOpenMainMenu && !hbarMenuBtn.classList.contains('active')) {
-    hideMainMenu()
-  }
-})
-mainMenu.addEventListener('mouseleave', (event) => {
-  if (isOpenMainMenu && !hbarMenuBtn.classList.contains('active')) {
-    hideMainMenu()
-  }
-})
-
-hbarMenuBtn.addEventListener('click', () => {
-  hbarMenuBtn.classList.toggle('active')
-  if (hbarMenuBtn.classList.contains('active')) {
-    headerMenu.classList.remove('scrolled')
-    headerMenu.classList.add('light')
-    mainMenu.classList.add('opened')
-    hmenuLinkFirst.classList.add('active')
-    listWrapper.style.position = 'relative'
-  } else {
-    headerMenu.classList.add('scrolled')
-    headerMenu.classList.remove('light')
-    mainMenu.classList.remove('opened')
-    hmenuLinkFirst.classList.remove('active')
-    setTimeout(() => {
-      listWrapper.style.position = 'absolute'
-    }, 400)
-  }
-})
-
 // SUBLIST MENU
 const menuLinks = document.querySelectorAll('.menu__link')
 const menuLists = document.querySelectorAll('.menu__list')
+const menuListsMobile = document.querySelectorAll('.menu__sublist--mobile')
 const listWrapper = document.querySelector('.list-wrapper')
 let maxHeightList = 0
 
-function getMaxHeightList() {
-  menuLists.forEach((menuList) => {
-    const heightList = menuList.offsetHeight
-    if (heightList > maxHeightList) maxHeightList = heightList
-  })
+if (isMobile) {
+  menuLinks.forEach((menuLink) => {
+    menuLink.addEventListener('click', (event) => {
+      event.preventDefault()
 
-  return maxHeightList
+      menuLinks.forEach((menuLink) => menuLink.classList.remove('active'))
+      menuListsMobile.forEach((menuListMobile) => {
+        menuListMobile.classList.remove('active')
+        menuListMobile.style.maxHeight = 0
+      })
+
+      menuLink.classList.toggle('active')
+
+      const valueDataLink = menuLink.getAttribute('data-value')
+      const currentMenuListItem = document.querySelector(
+        `.menu__sublist--mobile[data-value="${valueDataLink}"]`
+      )
+      console.log(currentMenuListItem.scrollHeight)
+      currentMenuListItem.style.maxHeight = `${currentMenuListItem.scrollHeight}px`
+      currentMenuListItem.classList.add('active')
+    })
+  })
+} else {
+  function getMaxHeightList() {
+    menuLists.forEach((menuList) => {
+      const heightList = menuList.offsetHeight
+      if (heightList > maxHeightList) maxHeightList = heightList
+    })
+
+    return maxHeightList
+  }
+  listWrapper.style.height = `${getMaxHeightList()}px`
+  menuLinks.forEach((menuLink) => {
+    menuLink.addEventListener('mouseenter', (event) => {
+      menuLinks.forEach((menuLink) => menuLink.classList.remove('active'))
+      menuLists.forEach((menuList) => menuList.classList.remove('active'))
+      menuLink.classList.add('active')
+
+      const valueDataLink = menuLink.getAttribute('data-value')
+      const currentMenuListItem = document.querySelector(
+        `.menu__list[data-value="${valueDataLink}"]`
+      )
+      currentMenuListItem.classList.add('active')
+    })
+  })
 }
-listWrapper.style.height = `${getMaxHeightList()}px`
-menuLinks.forEach((menuLink) => {
-  menuLink.addEventListener('mouseenter', (event) => {
-    menuLinks.forEach((menuLink) => menuLink.classList.remove('active'))
-    menuLists.forEach((menuList) => menuList.classList.remove('active'))
-    menuLink.classList.add('active')
-
-    const valueDataLink = menuLink.getAttribute('data-value')
-    const currentMenuListItem = document.querySelector(
-      `.menu__list[data-value="${valueDataLink}"]`
-    )
-    currentMenuListItem.classList.add('active')
-  })
-})
 
 // SERVICES SLIDER
 let swiperInstance = null
@@ -325,6 +416,13 @@ const stslider = new Swiper(stockSliderContainer, {
   navigation: {
     nextEl: '.stslider__navbutton-next',
     prevEl: '.stslider__navbutton-prev',
+  },
+
+  breakpoints: {
+    320: {
+      slidesPerView: 1.2,
+    },
+    991: {},
   },
 
   on: {
@@ -463,3 +561,95 @@ proceduresItems.forEach((proceduresItem) =>
     event.target.classList.add('active')
   })
 )
+
+// PROCEDURES SLIDER
+let swiperInstanceProcedures = null
+
+function initSwiperIfMobile2() {
+  const container = document.querySelector('.procedures__grid')
+
+  if (!container) return
+
+  const wrapper = container.querySelector('.procedures__wrapper')
+  const slideList = wrapper.querySelectorAll('.procedures__item')
+
+  const isMobile = window.innerWidth <= 991
+
+  if (isMobile && !swiperInstanceProcedures) {
+    container.classList.add('swiper')
+
+    wrapper.classList.add('swiper-wrapper')
+    wrapper.style.display = 'flex'
+
+    slideList.forEach((slide) => slide.classList.add('swiper-slide'))
+
+    swiperInstanceProcedures = new Swiper(container, {
+      slidesPerView: 1.5,
+      spaceBetween: 4,
+      centeredSlides: false,
+      grabCursor: true,
+      loop: true,
+    })
+  }
+
+  if (!isMobile && swiperInstanceProcedures) {
+    swiperInstanceProcedures.destroy(true, true)
+    swiperInstanceProcedures = null
+
+    container.classList.remove('swiper')
+    wrapper.classList.remove('swiper-wrapper')
+    slideList.forEach((slide) => slide.classList.remove('swiper-slide'))
+  }
+}
+
+window.addEventListener('load', initSwiperIfMobile2)
+window.addEventListener('resize', () => {
+  clearTimeout(window.__swiperTimer)
+  window.__swiperTimer = setTimeout(initSwiperIfMobile2, 200) // debounce
+})
+
+// ADVANTAGE SLIDER
+let swiperInstanceAdvantage = null
+
+function initSwiperIfMobile3() {
+  const container = document.querySelector('.advantage__slider')
+
+  if (!container) return
+
+  const wrapper = container.querySelector('.advantage__grid')
+  const slideList = wrapper.querySelectorAll('.advantage__item')
+
+  const isMobile = window.innerWidth <= 575
+
+  if (isMobile && !swiperInstanceAdvantage) {
+    container.classList.add('swiper')
+
+    wrapper.classList.add('swiper-wrapper')
+    wrapper.style.display = 'flex'
+
+    slideList.forEach((slide) => slide.classList.add('swiper-slide'))
+
+    swiperInstanceAdvantage = new Swiper(container, {
+      slidesPerView: 1,
+      spaceBetween: 4,
+      centeredSlides: false,
+      grabCursor: true,
+      loop: true,
+    })
+  }
+
+  if (!isMobile && swiperInstanceAdvantage) {
+    swiperInstanceAdvantage.destroy(true, true)
+    swiperInstanceAdvantage = null
+
+    container.classList.remove('swiper')
+    wrapper.classList.remove('swiper-wrapper')
+    slideList.forEach((slide) => slide.classList.remove('swiper-slide'))
+  }
+}
+
+window.addEventListener('load', initSwiperIfMobile3)
+window.addEventListener('resize', () => {
+  clearTimeout(window.__swiperTimer)
+  window.__swiperTimer = setTimeout(initSwiperIfMobile3, 200) // debounce
+})
