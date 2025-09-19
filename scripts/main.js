@@ -122,7 +122,6 @@ const hmenuLinkFirst = document.querySelector('.hmenu__link')
 const mainMenu = document.querySelector('.menu')
 const headerMenu = document.querySelector('.header__menu')
 const menuWrapper = document.querySelector('.menu__wrapper')
-const menuHeight = menuWrapper.offsetHeight
 
 function showMinimalHbar() {
   hbar.classList.add('scrolled')
@@ -131,13 +130,18 @@ function hideMinimalHbar() {
   hbar.classList.remove('scrolled')
 }
 
+function hideMinimalHmenu() {
+  headerMenu.classList.add('scrolled')
+}
+function showMinimalHmenu() {
+  headerMenu.classList.remove('scrolled')
+}
+
 function showMainMenu() {
   hmenuLinkFirst.classList.add('active')
   hbar.classList.add('light')
   headerMenu.classList.add('light')
   mainMenu.classList.add('opened')
-
-  mainMenu.style.height = `${menuHeight}px`
 }
 function hideMainMenu() {
   hmenuLinkFirst.classList.remove('active')
@@ -145,17 +149,17 @@ function hideMainMenu() {
   headerMenu.classList.remove('light')
   mainMenu.classList.remove('opened')
   mainMenu.classList.remove('scrolled')
-  mainMenu.style.height = 0
 }
 
 window.addEventListener('scroll', () => {
   if (window.scrollY) {
     showMinimalHbar()
     hideMainMenu()
-    headerMenu.classList.remove('scrolled')
+    hideMinimalHmenu()
     hbarMenuBtn.classList.remove('active')
   } else {
     hideMinimalHbar()
+    showMinimalHmenu()
   }
 })
 hmenuLinkFirst.addEventListener('click', (event) => {
@@ -166,7 +170,7 @@ hmenuLinkFirst.addEventListener('click', (event) => {
   ) {
     hideMainMenu()
     hbarMenuBtn.classList.remove('active')
-    headerMenu.classList.remove('scrolled', 'light')
+    headerMenu.classList.remove('light')
   } else if (hmenuLinkFirst.classList.contains('active')) {
     hideMainMenu()
   } else {
@@ -176,17 +180,15 @@ hmenuLinkFirst.addEventListener('click', (event) => {
 hbarMenuBtn.addEventListener('click', () => {
   hbarMenuBtn.classList.toggle('active')
   if (hbarMenuBtn.classList.contains('active')) {
-    headerMenu.classList.add('scrolled', 'light')
-    mainMenu.classList.add('scrolled')
-    hmenuLinkFirst.classList.add('active')
+    headerMenu.classList.remove('scrolled')
+    headerMenu.classList.add('light')
     mainMenu.classList.add('opened')
-    mainMenu.style.height = `${menuHeight}px`
+    hmenuLinkFirst.classList.add('active')
   } else {
-    headerMenu.classList.remove('scrolled', 'light')
-    mainMenu.classList.remove('scrolled')
-    hmenuLinkFirst.classList.remove('active')
+    headerMenu.classList.add('scrolled')
+    headerMenu.classList.remove('light')
     mainMenu.classList.remove('opened')
-    mainMenu.style.height = 0
+    hmenuLinkFirst.classList.remove('active')
   }
 })
 
