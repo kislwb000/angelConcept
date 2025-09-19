@@ -116,12 +116,14 @@ let headerSlider = new Swiper(headerSliderBlock, {
 })
 
 // MENU & BAR
+const header = document.querySelector('.header')
 const hbar = document.querySelector('.header__bar')
 const hbarMenuBtn = document.querySelector('.hbar__menubtn')
 const hmenuLinkFirst = document.querySelector('.hmenu__link')
 const mainMenu = document.querySelector('.menu')
 const headerMenu = document.querySelector('.header__menu')
 const menuWrapper = document.querySelector('.menu__wrapper')
+let isOpenMainMenu = false
 
 function showMinimalHbar() {
   hbar.classList.add('scrolled')
@@ -162,21 +164,25 @@ window.addEventListener('scroll', () => {
     showMinimalHmenu()
   }
 })
-hmenuLinkFirst.addEventListener('click', (event) => {
+
+hmenuLinkFirst.addEventListener('mouseenter', (event) => {
   event.preventDefault()
-  if (
-    hmenuLinkFirst.classList.contains('active') &&
-    hbarMenuBtn.classList.contains('active')
-  ) {
-    hideMainMenu()
-    hbarMenuBtn.classList.remove('active')
-    headerMenu.classList.remove('light')
-  } else if (hmenuLinkFirst.classList.contains('active')) {
-    hideMainMenu()
-  } else {
+  if (!hbarMenuBtn.classList.contains('active')) {
     showMainMenu()
+    isOpenMainMenu = true
   }
 })
+hbar.addEventListener('mouseenter', (event) => {
+  if (isOpenMainMenu && !hbarMenuBtn.classList.contains('active')) {
+    hideMainMenu()
+  }
+})
+mainMenu.addEventListener('mouseleave', (event) => {
+  if (isOpenMainMenu && !hbarMenuBtn.classList.contains('active')) {
+    hideMainMenu()
+  }
+})
+
 hbarMenuBtn.addEventListener('click', () => {
   hbarMenuBtn.classList.toggle('active')
   if (hbarMenuBtn.classList.contains('active')) {
@@ -184,12 +190,45 @@ hbarMenuBtn.addEventListener('click', () => {
     headerMenu.classList.add('light')
     mainMenu.classList.add('opened')
     hmenuLinkFirst.classList.add('active')
+    listWrapper.style.position = 'relative'
   } else {
     headerMenu.classList.add('scrolled')
     headerMenu.classList.remove('light')
     mainMenu.classList.remove('opened')
     hmenuLinkFirst.classList.remove('active')
+    setTimeout(() => {
+      listWrapper.style.position = 'absolute'
+    }, 400)
   }
+})
+
+// SUBLIST MENU
+const menuLinks = document.querySelectorAll('.menu__link')
+const menuLists = document.querySelectorAll('.menu__list')
+const listWrapper = document.querySelector('.list-wrapper')
+let maxHeightList = 0
+
+function getMaxHeightList() {
+  menuLists.forEach((menuList) => {
+    const heightList = menuList.offsetHeight
+    if (heightList > maxHeightList) maxHeightList = heightList
+  })
+
+  return maxHeightList
+}
+listWrapper.style.height = `${getMaxHeightList()}px`
+menuLinks.forEach((menuLink) => {
+  menuLink.addEventListener('mouseenter', (event) => {
+    menuLinks.forEach((menuLink) => menuLink.classList.remove('active'))
+    menuLists.forEach((menuList) => menuList.classList.remove('active'))
+    menuLink.classList.add('active')
+
+    const valueDataLink = menuLink.getAttribute('data-value')
+    const currentMenuListItem = document.querySelector(
+      `.menu__list[data-value="${valueDataLink}"]`
+    )
+    currentMenuListItem.classList.add('active')
+  })
 })
 
 // SERVICES SLIDER
