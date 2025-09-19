@@ -149,7 +149,7 @@ function hideMainMenu() {
 }
 
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 20) {
+  if (window.scrollY) {
     showMinimalHbar()
     hideMainMenu()
     headerMenu.classList.remove('scrolled')
