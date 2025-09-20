@@ -635,6 +635,34 @@ function initSwiperIfMobile3() {
       centeredSlides: false,
       grabCursor: true,
       loop: true,
+
+      navigation: {
+        nextEl: '.advslider__navbutton-next',
+        prevEl: '.advslider__navbutton-prev',
+      },
+
+      pagination: {
+        el: '.advlider__pagination',
+        clickable: false,
+        type: 'fraction',
+        formatFractionCurrent: function (number) {
+          return number < 10 ? '0' + number : number
+        },
+        formatFractionTotal: function (number) {
+          return number < 10 ? '0' + number : number
+        },
+        renderFraction: function (currentClass, totalClass) {
+          return (
+            '<span class="' +
+            currentClass +
+            '"></span>' +
+            ' — ' +
+            '<span class="' +
+            totalClass +
+            '"></span>'
+          )
+        },
+      },
     })
   }
 
